@@ -1,3 +1,4 @@
+using ExchangeRatesBL.Models;
 using ExchangeRatesBL.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,10 +22,11 @@ namespace ExchangeRatesApi.Controllers
 
         #region Http Methods
         [HttpGet]
-        public async Task<string> Get()
+        public async Task<List<ExchangeRateResponseDTO>> Get()
 {
-            string exchangeRatesList = await _exchangeRateService.GetExchangeRates();
-            return exchangeRatesList;
+            var exchangeRatesList = await _exchangeRateService.GetExchangeRates();
+            exchangeRatesList.RemoveAll(rate => rate.CurrentChange < rate.CurrentExchangeRate);//removes all positive exchange rates
+            return exchangeRatesList;//returns only exchange rates which are less then the current rate
         }
         #endregion
 

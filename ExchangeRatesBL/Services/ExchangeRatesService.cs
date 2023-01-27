@@ -18,17 +18,19 @@ namespace ExchangeRatesBL.Services
             _apiService = apiService;
         }
         #endregion
-        public async Task<string> GetExchangeRates()
+
+        public async Task<List<ExchangeRateResponseDTO>> GetExchangeRates()
         {
             ApiRequest request = new ApiRequest();
-            request.EndPoint = _appSettings.ExchangeRates.EndPoint;//"https://boi.org.il/PublicApi/GetExchangeRates?asXML=true";
+            request.EndPoint = _appSettings.ExchangeRates.EndPoint;
             string response = await _apiService.GetHttpRequest(request);
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(response);
 
             string jsonText = JsonConvert.SerializeXmlNode(xmlDoc);
-
-            return jsonText;
+            var result = JsonConvert.DeserializeObject<ExchangeRatesRes>(jsonText);
+            var ratesList = result.ExchangeRatesResponseCollectioDTO.ExchangeRates.ExchangeRateResponseDTO;
+            return ratesList;
         }
 
     }

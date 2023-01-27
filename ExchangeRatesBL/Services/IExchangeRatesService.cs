@@ -1,9 +1,11 @@
 ﻿
 
+using ExchangeRatesBL.Models;
+
 namespace ExchangeRatesBL.Services
 {
     public interface IExchangeRatesService
     {
-        Task<string> GetExchangeRates();
+        Task<List<ExchangeRateResponseDTO>> GetExchangeRates();
     }
 }

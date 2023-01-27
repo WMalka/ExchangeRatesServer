@@ -23,6 +23,7 @@ namespace ExchangeRatesApi
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+            services.AddCors();
 
 
         }
@@ -33,7 +34,12 @@ namespace ExchangeRatesApi
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            app.UseCors(builder => builder
+            .WithOrigins("http://localhost:3000")
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials());
+           
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
